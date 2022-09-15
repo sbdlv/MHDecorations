@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import {SkeletonModule} from 'primeng/skeleton';
 import {InputTextModule} from 'primeng/inputtext';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [],
@@ -12,7 +13,8 @@ import {InputTextModule} from 'primeng/inputtext';
   exports: [
     DropdownModule,
     SkeletonModule,
-    InputTextModule
+    InputTextModule,
+    TableModule
   ]
 })
 export class PrimengModule { }
