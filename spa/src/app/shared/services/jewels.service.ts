@@ -15,6 +15,6 @@ export class JewelsService {
   constructor(private api: ApiService) { }
 
   getByLang(lang: string) {
-    return this.api.getData<IJewel>(`jewels.${lang}.json`)
+    return this.api.getData<IJewel[]>(`jewels.${lang}.json`)
   }
 }
