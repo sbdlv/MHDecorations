@@ -9,7 +9,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  getData(resource: string) {
-    return this.http.get(environment.getDataUrl(resource));
+  getData<Type>(resource: string) {
+    return this.http.get<Type>(environment.getDataUrl(resource));
   }
 }

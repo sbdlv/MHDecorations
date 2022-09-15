@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentsModule } from '../components/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApiService } from '../services/api.service';
 import { HttpClientModule } from '@angular/common/http';
+import { JewelsService } from '../services/jewels.service';
 
 
 @NgModule({
@@ -16,8 +16,5 @@ import { HttpClientModule } from '@angular/common/http';
     ComponentsModule,
     BrowserAnimationsModule,
   ],
-  providers: [
-    ApiService
-  ]
 })
 export class SharedModule { }
