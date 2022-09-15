@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 
 export interface IJewel {
+  id: string,
   name: string,
   ability: string
   desc: string

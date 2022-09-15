@@ -1,10 +1,23 @@
 <main class="container">
 
-    <p-dropdown [options]="langs" [(ngModel)]="sourceLang" placeholder="Source language" [lazy]="true" (onChange)="onChangeSourceLang()">
+    <p-dropdown (onChange)="onChangeSourceLang()" [options]="langs" [(ngModel)]="sourceLang" placeholder="Source language" [lazy]="true">
         <ng-template pTemplate="loader" let-options="options">
             <div class="flex align-items-center py-2 px-3" style="height: 38px">
                 <p-skeleton [width]="options.even ? '60%' : '50%'" height="1rem"></p-skeleton>
             </div>
         </ng-template>
     </p-dropdown>
+
+    <p-dropdown (onChange)="onChangeTargetLang()" [options]="langs" [(ngModel)]="targetLang" placeholder="Target language" [lazy]="true">
+        <ng-template pTemplate="loader" let-options="options">
+            <div class="flex align-items-center py-2 px-3" style="height: 38px">
+                <p-skeleton [width]="options.even ? '60%' : '50%'" height="1rem"></p-skeleton>
+            </div>
+        </ng-template>
+    </p-dropdown>
+
+    <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText placeholder="Search" [(ngModel)]="query" (ngModelChange)="onSearch()"/>
+    </span>
 </main>
