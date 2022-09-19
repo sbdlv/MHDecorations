@@ -1,0 +1,16 @@
+main {
+    min-height: 100%;
+}
+
+:host ::ng-deep .p-dropdown {
+    width: 14rem;
+}
+
+.flag-item {
+    display: flex;
+    align-items: center;
+
+}
+.flag{
+    margin-right: 8px;
+}

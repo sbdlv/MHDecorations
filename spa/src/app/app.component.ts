@@ -53,21 +53,23 @@ export class AppComponent implements OnInit {
   }
 
   onChangeSourceLang() {
-    this.jewelsService.getByLang(this.sourceLang.code).subscribe({
-      next: (jewels) => {
-        this.sourceJewels = jewels;
-        this.onSearch();
-      }
-    })
+    if (this.sourceLang)
+      this.jewelsService.getByLang(this.sourceLang.code).subscribe({
+        next: (jewels) => {
+          this.sourceJewels = jewels;
+          this.onSearch();
+        }
+      })
   }
 
   onChangeTargetLang() {
-    this.jewelsService.getByLang(this.targetLang.code).subscribe({
-      next: (jewels) => {
-        this.targetJewels = jewels
-        this.onSearch();
-      }
-    })
+    if (this.targetLang)
+      this.jewelsService.getByLang(this.targetLang.code).subscribe({
+        next: (jewels) => {
+          this.targetJewels = jewels
+          this.onSearch();
+        }
+      })
   }
 
   onSearch() {
