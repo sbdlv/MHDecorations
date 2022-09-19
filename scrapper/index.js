@@ -1,10 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-
-const LANGS = [
-    'es',
-    'en'
-];
+const LANGS = require('../data/langs.json');
 
 (async () => {
     const browser = await puppeteer.launch();
@@ -44,7 +40,7 @@ const LANGS = [
     const promises = [];
 
     for (const lang of LANGS) {
-        promises.push(processLang(lang, await browser.newPage()))
+        promises.push(processLang(lang.code, await browser.newPage()))
     }
 
     await Promise.all(promises);
