@@ -8,5 +8,55 @@
         "name": "Spanish",
         "flag": "es",
         "code": "es"
+    },
+    {
+        "name": "Japanese",
+        "flag": "jp",
+        "code": "ja"
+    },
+    {
+        "name": "Korean",
+        "flag": "kr",
+        "code": "ko"
+    },
+    {
+        "name": "Russian",
+        "flag": "ru",
+        "code": "ru"
+    },
+    {
+        "name": "Français",
+        "flag": "fr",
+        "code": "fr"
+    },
+    {
+        "name": "Arabic",
+        "flag": "",
+        "code": "ar"
+    },
+    {
+        "name": "Italian",
+        "flag": "it",
+        "code": "it"
+    },
+    {
+        "name": "Deutsch",
+        "flag": "de",
+        "code": "de"
+    },
+    {
+        "name": "Polski",
+        "flag": "pl",
+        "code": "pl"
+    },
+    {
+        "name": "Chinese",
+        "flag": "cn",
+        "code": "zh"
+    },
+    {
+        "name": "Chinese (Simplified)",
+        "flag": "cn",
+        "code": "zh-Hant"
     }
 ]
