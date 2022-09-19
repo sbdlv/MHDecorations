@@ -10,16 +10,31 @@ interface QueriedData {
   desc?: string,
   ability?: string,
 }
+
+interface ILang {
+  name: string,
+  flag: string,
+  code: string
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  langs: { label: string, value: string }[] = []
+  langs: ILang[] = []
 
-  sourceLang: string = 'en';
-  targetLang: string = 'es';
+  sourceLang: ILang = {
+    name: 'English',
+    flag: 'gb',
+    code: 'en'
+  };
+  targetLang: ILang = {
+    name: 'Spanish',
+    flag: 'es',
+    code: 'es'
+  };
   query = '';
 
   sourceJewels: IJewel[] = [];
@@ -29,8 +44,8 @@ export class AppComponent implements OnInit {
   constructor(private jewelsService: JewelsService, private api: ApiService) { }
 
   ngOnInit(): void {
-    this.api.getData<string[]>('langs.json').subscribe({
-      next: (langs) => this.langs = langs.map(lang => { return { label: lang, value: lang } }),
+    this.api.getData<ILang[]>('langs.json').subscribe({
+      next: (langs) => this.langs = langs
     })
 
     this.onChangeSourceLang();
@@ -38,21 +53,23 @@ export class AppComponent implements OnInit {
   }
 
   onChangeSourceLang() {
-    this.jewelsService.getByLang(this.sourceLang).subscribe({
-      next: (jewels) => {
-        this.sourceJewels = jewels;
-        this.onSearch();
-      }
-    })
+    if (this.sourceLang)
+      this.jewelsService.getByLang(this.sourceLang.code).subscribe({
+        next: (jewels) => {
+          this.sourceJewels = jewels;
+          this.onSearch();
+        }
+      })
   }
 
   onChangeTargetLang() {
-    this.jewelsService.getByLang(this.targetLang).subscribe({
-      next: (jewels) => {
-        this.targetJewels = jewels
-        this.onSearch();
-      }
-    })
+    if (this.targetLang)
+      this.jewelsService.getByLang(this.targetLang.code).subscribe({
+        next: (jewels) => {
+          this.targetJewels = jewels
+          this.onSearch();
+        }
+      })
   }
 
   onSearch() {
