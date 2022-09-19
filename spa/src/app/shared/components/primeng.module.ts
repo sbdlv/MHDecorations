@@ -4,6 +4,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import {SkeletonModule} from 'primeng/skeleton';
 import {InputTextModule} from 'primeng/inputtext';
 import {TableModule} from 'primeng/table';
+import {CardModule} from 'primeng/card';
 
 @NgModule({
   declarations: [],
@@ -14,7 +15,8 @@ import {TableModule} from 'primeng/table';
     DropdownModule,
     SkeletonModule,
     InputTextModule,
-    TableModule
+    TableModule,
+    CardModule
   ]
 })
 export class PrimengModule { }
