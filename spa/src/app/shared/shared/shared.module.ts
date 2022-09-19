@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ComponentsModule } from '../components/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { JewelsService } from '../services/jewels.service';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [],
@@ -15,6 +14,7 @@ import { JewelsService } from '../services/jewels.service';
   exports: [
     ComponentsModule,
     BrowserAnimationsModule,
+    FormsModule
   ],
 })
 export class SharedModule { }
