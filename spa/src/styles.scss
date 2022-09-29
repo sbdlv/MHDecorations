@@ -9,6 +9,12 @@
 body{
     margin: 0;
     padding: 2rem;
+    background: #09111a;
+}
+
+a{
+    text-decoration: none;
+    color: var(--cyan-300 );
 }
 
 @import url('./assets/flags/style.scss');
