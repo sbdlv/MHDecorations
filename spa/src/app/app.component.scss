@@ -1,7 +1,6 @@
 main {
     min-height: 100%;
 }
-
 :host ::ng-deep .p-dropdown {
     width: 14rem;
 }
@@ -9,8 +8,7 @@ main {
 .flag-item {
     display: flex;
     align-items: center;
-
 }
-.flag{
+.flag {
     margin-right: 8px;
 }
