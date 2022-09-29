@@ -1,6 +1,8 @@
 <main class="container card">
     <p-card>
-        <section id="lang-selection" class="mb-4">
+        <h1 class="mt-0 mb-3">Translated decorations - MH Rise</h1>
+        <p class="mb-4">Search decorations by their name.</p>
+        <section id="lang-selection" class="mb-4 flex align-items-center">
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="sourceLang" (onChange)="onChangeSourceLang()"
                 [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
                 <ng-template pTemplate="selectedItem">
@@ -16,7 +18,7 @@
                     </div>
                 </ng-template>
             </p-dropdown>
-
+            <i class="pi pi-arrow-right mx-4 my-2"></i>
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="targetLang" (onChange)="onChangeTargetLang()"
                 [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
                 <ng-template pTemplate="selectedItem">
@@ -36,7 +38,7 @@
         <section id="search" class="mb-4">
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search" [(ngModel)]="query" (ngModelChange)="onSearch()"
+                <input type="text" pInputText placeholder="Search by original name" [(ngModel)]="query" (ngModelChange)="onSearch()"
                     class="w-full" />
             </span>
         </section>
@@ -52,8 +54,8 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-jewel>
                     <tr>
-                        <td><a href="#">{{jewel.sourceName}}</a></td>
-                        <td>{{jewel.targetName}}</td>
+                        <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{jewel.id}}" target="_blank">{{jewel.sourceName}}</a></td>
+                        <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{jewel.id}}" target="_blank">{{jewel.targetName}}</a></td>
                         <td>{{jewel.ability}}</td>
                         <td>{{jewel.desc}}</td>
                     </tr>
