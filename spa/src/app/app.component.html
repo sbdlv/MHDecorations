@@ -1,6 +1,6 @@
 <main class="container card">
     <p-card>
-        <section id="lang-selection" class="mb-4">
+        <section id="lang-selection" class="mb-4 flex align-items-center">
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="sourceLang" (onChange)="onChangeSourceLang()"
                 [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
                 <ng-template pTemplate="selectedItem">
@@ -16,7 +16,7 @@
                     </div>
                 </ng-template>
             </p-dropdown>
-
+            <i class="pi pi-arrow-right mx-4"></i>
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="targetLang" (onChange)="onChangeTargetLang()"
                 [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
                 <ng-template pTemplate="selectedItem">
