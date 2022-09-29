@@ -1,6 +1,20 @@
 main {
     min-height: 100%;
+
+    padding: 2rem 0;
 }
+
+@media only screen and (max-width: 767px) {
+    .container {
+        padding: 1rem;
+    }
+}
+@media only screen and (max-width: 425px) {
+    .container {
+        padding: 0;
+    }
+}
+
 :host ::ng-deep .p-dropdown {
     width: 14rem;
 }
@@ -11,4 +25,14 @@ main {
 }
 .flag {
     margin-right: 8px;
+}
+
+#lang-selection {
+    @media (max-width: 652px) {
+        flex-direction: column;
+
+        .pi {
+            transform: rotateZ(90deg);
+        }
+    }
 }
