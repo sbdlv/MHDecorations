@@ -1,6 +1,7 @@
 <main class="container card">
     <p-card>
-        <h1 class="mt-0 mb-4">Decorations list - MH Rise</h1>
+        <h1 class="mt-0 mb-3">Translated decorations - MH Rise</h1>
+        <p class="mb-4">Search decorations by their name.</p>
         <section id="lang-selection" class="mb-4 flex align-items-center">
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="sourceLang" (onChange)="onChangeSourceLang()"
                 [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
@@ -37,7 +38,7 @@
         <section id="search" class="mb-4">
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search" [(ngModel)]="query" (ngModelChange)="onSearch()"
+                <input type="text" pInputText placeholder="Search by original name" [(ngModel)]="query" (ngModelChange)="onSearch()"
                     class="w-full" />
             </span>
         </section>
