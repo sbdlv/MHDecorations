@@ -8,7 +8,10 @@
 
 body{
     margin: 0;
-    background: #09111a;
+    background-color: #09111a;
+    background-image: url("./assets/background.jpg");
+    background-attachment: fixed;
+    backdrop-filter: blur(4px);
 }
 
 a{
