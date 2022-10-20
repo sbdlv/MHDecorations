@@ -20,8 +20,9 @@ const LANGS = require('../data/langs.json');
                     name: fields[0].innerText,
                     ability: fields[1].innerText,
                     desc: fields[2].innerText,
-                    level: fields[0].innerText.match(/[０-９]+|[0-9]+/).pop()
-                }
+                    level: fields[0].innerText.match(/[０-９]+|[0-9]+/).pop(),
+                    skill_level: fields[1].innerText.match(/[０-９]+|[0-9]+/).pop(),
+                };
             })
         })
     }
