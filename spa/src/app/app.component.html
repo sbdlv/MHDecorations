@@ -35,25 +35,32 @@
                 </ng-template>
             </p-dropdown>
         </section>
-        <section id="search" class="mb-4">
-            <span class="p-input-icon-left w-full">
+        <section id="search" class="mb-2">
+            <span class="p-input-icon-left w-full mb-4">
                 <i class="pi pi-search"></i>
                 <input type="text" pInputText placeholder="Search by original name or target name"
                     [(ngModel)]="searchText" (ngModelChange)="filterData()" class="w-full" />
             </span>
-            <div class="flex">
-                <div>
-                    <h5>Decoration level</h5>
-                    <p-selectButton [options]="decorationLevelOptions" [multiple]="true" optionLabel="name"
-                        optionValue="value" [(ngModel)]="decorationLevels"
-                        (ngModelChange)="filterData()"></p-selectButton>
-                </div>
-                <div class="ml-4">
-                    <h5>Ability level</h5>
-                    <p-selectButton [options]="abilityLevelOptions" [multiple]="true" optionLabel="name"
-                        optionValue="value" [(ngModel)]="abilityLevels" (ngModelChange)="filterData()"></p-selectButton>
-                </div>
-            </div>
+        </section>
+        <section class="mb-4">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Filters">
+                    <div class="flex flex-wrap gap-4">
+                        <div>
+                            <h5>Decoration level</h5>
+                            <p-selectButton [options]="decorationLevelOptions" [multiple]="true" optionLabel="name"
+                                optionValue="value" [(ngModel)]="decorationLevels"
+                                (ngModelChange)="filterData()"></p-selectButton>
+                        </div>
+                        <div>
+                            <h5>Ability level</h5>
+                            <p-selectButton [options]="abilityLevelOptions" [multiple]="true" optionLabel="name"
+                                optionValue="value" [(ngModel)]="abilityLevels"
+                                (ngModelChange)="filterData()"></p-selectButton>
+                        </div>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
         </section>
         <section id="table">
             <p-table [value]="queriedJewels" responsiveLayout="scroll">
