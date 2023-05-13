@@ -27,11 +27,32 @@ export class AppComponent implements OnInit {
 
   sourceLang!: ILang;
   targetLang!: ILang;
-  query = '';
 
   sourceJewels: IJewel[] = [];
   targetJewels: IJewel[] = [];
   queriedJewels: QueriedData[] = [];
+
+  // Filters
+
+  readonly decorationLevelOptions = [
+    { name: '1', value: 1 },
+    { name: '2', value: 2 },
+    { name: '3', value: 3 },
+    { name: '4', value: 4 },
+  ];
+
+  readonly abilityLevelOptions = [
+    { name: '1', value: 1 },
+    { name: '2', value: 2 },
+    { name: '3', value: 3 },
+    { name: '4', value: 4 },
+    { name: '5', value: 5 },
+  ];
+
+  searchText = '';
+  decorationLevels: number[] = [];
+  abilityLevels: number[] = [];
+
 
   constructor(private jewelsService: JewelsService, private api: ApiService) {
     const localStorageSourceLang = localStorage.getItem('sourceLang');
@@ -75,7 +96,7 @@ export class AppComponent implements OnInit {
       this.jewelsService.getByLang(this.sourceLang.code).subscribe({
         next: (jewels) => {
           this.sourceJewels = jewels;
-          this.onSearch();
+          this.filterData();
         }
       })
   }
@@ -87,19 +108,15 @@ export class AppComponent implements OnInit {
       this.jewelsService.getByLang(this.targetLang.code).subscribe({
         next: (jewels) => {
           this.targetJewels = jewels
-          this.onSearch();
+          this.filterData();
         }
       })
   }
 
-  onSearch() {
-    const lowerCaseQuery = this.query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
+  filterData() {
     // Search jewels from both languages
-    const matchedJewelsSourceLang = this.sourceJewels.filter(jewel =>
-      jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1)
-    const matchedJewelsTargetLang = this.targetJewels.filter(jewel =>
-      jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1)
+    const matchedJewelsSourceLang = this.filterJewels(this.sourceJewels);
+    const matchedJewelsTargetLang = this.filterJewels(this.targetJewels);
 
     // Create a collection with the matched jewels IDs form both languages
     const joinedMatchedIDs = new Set<string>(
@@ -121,5 +138,14 @@ export class AppComponent implements OnInit {
         ability: targetLangJewel?.ability
       }
     })
+  }
+
+  private filterJewels(jewels: IJewel[]) {
+    const lowerCaseQuery = this.searchText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    return jewels
+      .filter(jewel => jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1)
+      .filter(jewel => !this.decorationLevels.length || this.decorationLevels.includes(jewel.level))
+      .filter(jewel => !this.abilityLevels.length || this.abilityLevels.includes(jewel.skill_level))
   }
 }

@@ -1,7 +1,7 @@
 <main class="container card">
     <p-card>
         <h1 class="mt-0 mb-3">Translated decorations - MH Rise</h1>
-        <p class="mb-4">Search decorations by their name.</p>
+        <p class="mb-4">Search decorations.</p>
         <section id="lang-selection" class="mb-4 flex align-items-center">
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="sourceLang" (onChange)="onChangeSourceLang()"
                 [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
@@ -38,9 +38,22 @@
         <section id="search" class="mb-4">
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search by original name" [(ngModel)]="query" (ngModelChange)="onSearch()"
-                    class="w-full" />
+                <input type="text" pInputText placeholder="Search by original name or target name"
+                    [(ngModel)]="searchText" (ngModelChange)="filterData()" class="w-full" />
             </span>
+            <div class="flex">
+                <div>
+                    <h5>Decoration level</h5>
+                    <p-selectButton [options]="decorationLevelOptions" [multiple]="true" optionLabel="name"
+                        optionValue="value" [(ngModel)]="decorationLevels"
+                        (ngModelChange)="filterData()"></p-selectButton>
+                </div>
+                <div class="ml-4">
+                    <h5>Ability level</h5>
+                    <p-selectButton [options]="abilityLevelOptions" [multiple]="true" optionLabel="name"
+                        optionValue="value" [(ngModel)]="abilityLevels" (ngModelChange)="filterData()"></p-selectButton>
+                </div>
+            </div>
         </section>
         <section id="table">
             <p-table [value]="queriedJewels" responsiveLayout="scroll">
@@ -54,8 +67,10 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-jewel>
                     <tr>
-                        <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{jewel.id}}" target="_blank">{{jewel.sourceName}}</a></td>
-                        <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{jewel.id}}" target="_blank">{{jewel.targetName}}</a></td>
+                        <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{jewel.id}}"
+                                target="_blank">{{jewel.sourceName}}</a></td>
+                        <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{jewel.id}}"
+                                target="_blank">{{jewel.targetName}}</a></td>
                         <td>{{jewel.ability}}</td>
                         <td>{{jewel.desc}}</td>
                     </tr>
