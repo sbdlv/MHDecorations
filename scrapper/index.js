@@ -16,12 +16,12 @@ const LANGS = require('../data/langs.json');
             return rows.map(row => {
                 const fields = row.getElementsByTagName("td");
                 return {
-                    id: fields[0].firstElementChild.href.match(/[0-9]+/)[0],
+                    id: parseInt(fields[0].firstElementChild.href.match(/[0-9]+/)[0]),
                     name: fields[0].innerText,
                     ability: fields[1].innerText,
                     desc: fields[2].innerText,
-                    level: fields[0].innerText.match(/[０-９]+|[0-9]+/).pop(),
-                    skill_level: fields[1].innerText.match(/[０-９]+|[0-9]+/).pop(),
+                    level: parseInt(fields[0].innerText.match(/[０-９]+|[0-9]+/).pop()),
+                    skill_level: parseInt(fields[1].innerText.match(/[０-９]+|[0-9]+/).pop()),
                 };
             })
         })
