@@ -66,10 +66,10 @@
             <p-table [value]="queriedJewels" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Original name</th>
-                        <th>Target name</th>
-                        <th>Ability</th>
-                        <th>Description</th>
+                        <th pSortableColumn="sourceName">Original name <p-sortIcon field="sourceName"></p-sortIcon></th>
+                        <th pSortableColumn="targetName">Target name <p-sortIcon field="targetName"></p-sortIcon></th>
+                        <th pSortableColumn="ability">Ability <p-sortIcon field="ability"></p-sortIcon></th>
+                        <th pSortableColumn="desc">Description <p-sortIcon field="desc"></p-sortIcon></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-jewel>
