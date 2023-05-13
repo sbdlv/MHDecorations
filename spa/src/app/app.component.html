@@ -4,7 +4,7 @@
         <p class="mb-4">Search decorations.</p>
         <section id="lang-selection" class="mb-4 flex align-items-center">
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="sourceLang" (onChange)="onChangeSourceLang()"
-                [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
+                [filter]="true" filterBy="name" placeholder="Select a Country">
                 <ng-template pTemplate="selectedItem">
                     <div class="flag-item flag-item-value" *ngIf="sourceLang">
                         <img src="assets/flags/flag_placeholder.png" [class]="'flag flag-' + sourceLang.flag" />
@@ -20,7 +20,7 @@
             </p-dropdown>
             <i class="pi pi-arrow-right mx-4 my-2"></i>
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="targetLang" (onChange)="onChangeTargetLang()"
-                [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
+                [filter]="true" filterBy="name" placeholder="Select a Country">
                 <ng-template pTemplate="selectedItem">
                     <div class="flag-item flag-item-value" *ngIf="targetLang">
                         <img src="assets/flags/flag_placeholder.png" [class]="'flag flag-' + targetLang.flag" />
