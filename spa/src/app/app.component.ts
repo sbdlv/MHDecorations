@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ApiService } from './shared/services/api.service';
 import { IJewel, JewelsService } from './shared/services/jewels.service';
+import { MessageService } from 'primeng/api';
 
 interface QueriedData {
   id: string,
@@ -20,7 +21,8 @@ interface ILang {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [MessageService]
 })
 export class AppComponent implements OnInit {
   langs: ILang[] = []
@@ -54,7 +56,11 @@ export class AppComponent implements OnInit {
   abilityLevels: number[] = [];
 
 
-  constructor(private jewelsService: JewelsService, private api: ApiService) {
+  constructor(
+    private jewelsService: JewelsService,
+    private api: ApiService,
+    private messageService: MessageService
+  ) {
     const localStorageSourceLang = localStorage.getItem('sourceLang');
     const localStorageTargetLang = localStorage.getItem('targetLang');
 
@@ -82,7 +88,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.getData<ILang[]>('langs.json').subscribe({
-      next: (langs) => this.langs = langs
+      next: (langs) => this.langs = langs,
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain languages. Please refresh the page' })
     })
 
     this.onChangeSourceLang();
@@ -97,7 +104,8 @@ export class AppComponent implements OnInit {
         next: (jewels) => {
           this.sourceJewels = jewels;
           this.filterData();
-        }
+        },
+        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
       })
   }
 
@@ -109,7 +117,8 @@ export class AppComponent implements OnInit {
         next: (jewels) => {
           this.targetJewels = jewels
           this.filterData();
-        }
+        },
+        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
       })
   }
 
