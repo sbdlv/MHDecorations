@@ -1,10 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-
-const LANGS = [
-    'es',
-    'en'
-];
+const LANGS = require('../data/langs.json');
 
 (async () => {
     const browser = await puppeteer.launch();
@@ -20,11 +16,13 @@ const LANGS = [
             return rows.map(row => {
                 const fields = row.getElementsByTagName("td");
                 return {
-                    id: fields[0].firstElementChild.href.match(/[0-9]+/)[0],
+                    id: parseInt(fields[0].firstElementChild.href.match(/[0-9]+/)[0]),
                     name: fields[0].innerText,
                     ability: fields[1].innerText,
-                    desc: fields[2].innerText
-                }
+                    desc: fields[2].innerText,
+                    level: parseInt(fields[0].innerText.match(/[０-９]+|[0-9]+/).pop()),
+                    skill_level: parseInt(fields[1].innerText.match(/[０-９]+|[0-9]+/).pop()),
+                };
             })
         })
     }
@@ -44,7 +42,7 @@ const LANGS = [
     const promises = [];
 
     for (const lang of LANGS) {
-        promises.push(processLang(lang, await browser.newPage()))
+        promises.push(processLang(lang.code, await browser.newPage()))
     }
 
     await Promise.all(promises);
