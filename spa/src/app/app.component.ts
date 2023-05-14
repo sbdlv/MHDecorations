@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { ApiService } from './shared/services/api.service';
 import { IJewel, JewelsService } from './shared/services/jewels.service';
 import { MessageService } from 'primeng/api';
+import { forkJoin } from 'rxjs';
 
 interface QueriedData {
   id: string,
@@ -34,8 +34,7 @@ export class AppComponent implements OnInit {
   targetJewels: IJewel[] = [];
   queriedJewels: QueriedData[] = [];
 
-  isLoadingTargetData = true;
-  isLoadingSourceData = true;
+  isLoadingData = true;
 
   // Filters
 
@@ -63,68 +62,58 @@ export class AppComponent implements OnInit {
     private jewelsService: JewelsService,
     private api: ApiService,
     private messageService: MessageService
-  ) {
-    const localStorageSourceLang = localStorage.getItem('sourceLang');
-    const localStorageTargetLang = localStorage.getItem('targetLang');
-
-    if (localStorageSourceLang) {
-      this.sourceLang = JSON.parse(localStorageSourceLang);
-    } else {
-      // Default value
-      this.sourceLang = {
-        name: 'English',
-        flag: 'gb',
-        code: 'en'
-      };
-    }
-    if (localStorageTargetLang) {
-      this.targetLang = JSON.parse(localStorageTargetLang);
-    } else {
-      // Default value
-      this.targetLang = {
-        name: 'Spanish',
-        flag: 'es',
-        code: 'es'
-      };
-    }
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.setSourceAndTargetLanguageSelections();
+
     this.api.getData<ILang[]>('langs.json').subscribe({
       next: (langs) => this.langs = langs,
       error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain languages. Please refresh the page' })
     })
 
-    this.onChangeSourceLang();
-    this.onChangeTargetLang();
+    forkJoin({
+      sourceJewels: this.jewelsService.getByLang(this.sourceLang.code),
+      targetJewels: this.jewelsService.getByLang(this.targetLang.code),
+    }).subscribe({
+      next: (data) => {
+        this.sourceJewels = data.sourceJewels;
+        this.targetJewels = data.targetJewels;
+
+        // Filter all the data at once
+        this.filterData();
+        this.isLoadingData = false;
+      },
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
+    })
   }
 
   onChangeSourceLang() {
     localStorage.setItem('sourceLang', JSON.stringify(this.sourceLang));
 
-    this.isLoadingSourceData = true;
+    this.isLoadingData = true;
     this.jewelsService.getByLang(this.sourceLang.code).subscribe({
       next: (jewels) => {
         this.sourceJewels = jewels;
         this.filterData();
-        this.isLoadingSourceData = false;
+        this.isLoadingData = false;
       },
       error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
-    })
+    });
   }
 
   onChangeTargetLang() {
     localStorage.setItem('targetLang', JSON.stringify(this.targetLang));
 
-    this.isLoadingTargetData = true;
+    this.isLoadingData = true;
     this.jewelsService.getByLang(this.targetLang.code).subscribe({
       next: (jewels) => {
-        this.targetJewels = jewels
+        this.targetJewels = jewels;
         this.filterData();
-        this.isLoadingTargetData = false;
+        this.isLoadingData = false;
       },
       error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
-    })
+    });
   }
 
   filterData() {
@@ -161,5 +150,31 @@ export class AppComponent implements OnInit {
       .filter(jewel => jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1)
       .filter(jewel => !this.decorationLevels.length || this.decorationLevels.includes(jewel.level))
       .filter(jewel => !this.abilityLevels.length || this.abilityLevels.includes(jewel.skill_level))
+  }
+
+  private setSourceAndTargetLanguageSelections() {
+    const localStorageSourceLang = localStorage.getItem('sourceLang');
+    const localStorageTargetLang = localStorage.getItem('targetLang');
+
+    if (localStorageSourceLang) {
+      this.sourceLang = JSON.parse(localStorageSourceLang);
+    } else {
+      // Default value
+      this.sourceLang = {
+        name: 'English',
+        flag: 'gb',
+        code: 'en'
+      };
+    }
+    if (localStorageTargetLang) {
+      this.targetLang = JSON.parse(localStorageTargetLang);
+    } else {
+      // Default value
+      this.targetLang = {
+        name: 'Spanish',
+        flag: 'es',
+        code: 'es'
+      };
+    }
   }
 }

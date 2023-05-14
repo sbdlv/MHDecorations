@@ -36,8 +36,8 @@
                 </ng-template>
             </p-dropdown>
         </section>
-        <section id="search" class="mb-2">
-            <span class="p-input-icon-left w-full mb-4">
+        <section id="search" class="mb-4">
+            <span class="p-input-icon-left w-full">
                 <i class="pi pi-search"></i>
                 <input type="text" pInputText placeholder="Search by original name or target name"
                     [(ngModel)]="searchText" (ngModelChange)="filterData()" class="w-full" />
@@ -65,9 +65,9 @@
         </section>
         <section id="table">
             <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" ngClass="flex mx-auto"
-                *ngIf="isLoadingSourceData || isLoadingTargetData"></p-progressSpinner>
+                *ngIf="isLoadingData"></p-progressSpinner>
             <p-table [value]="queriedJewels" responsiveLayout="scroll"
-                *ngIf="!isLoadingSourceData && !isLoadingTargetData">
+                *ngIf="!isLoadingData">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="sourceName">Original name <p-sortIcon field="sourceName"></p-sortIcon></th>
