@@ -34,6 +34,9 @@ export class AppComponent implements OnInit {
   targetJewels: IJewel[] = [];
   queriedJewels: QueriedData[] = [];
 
+  isLoadingTargetData = true;
+  isLoadingSourceData = true;
+
   // Filters
 
   readonly decorationLevelOptions = [
@@ -99,27 +102,29 @@ export class AppComponent implements OnInit {
   onChangeSourceLang() {
     localStorage.setItem('sourceLang', JSON.stringify(this.sourceLang));
 
-    if (this.sourceLang)
-      this.jewelsService.getByLang(this.sourceLang.code).subscribe({
-        next: (jewels) => {
-          this.sourceJewels = jewels;
-          this.filterData();
-        },
-        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
-      })
+    this.isLoadingSourceData = true;
+    this.jewelsService.getByLang(this.sourceLang.code).subscribe({
+      next: (jewels) => {
+        this.sourceJewels = jewels;
+        this.filterData();
+        this.isLoadingSourceData = false;
+      },
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
+    })
   }
 
   onChangeTargetLang() {
     localStorage.setItem('targetLang', JSON.stringify(this.targetLang));
 
-    if (this.targetLang)
-      this.jewelsService.getByLang(this.targetLang.code).subscribe({
-        next: (jewels) => {
-          this.targetJewels = jewels
-          this.filterData();
-        },
-        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
-      })
+    this.isLoadingTargetData = true;
+    this.jewelsService.getByLang(this.targetLang.code).subscribe({
+      next: (jewels) => {
+        this.targetJewels = jewels
+        this.filterData();
+        this.isLoadingTargetData = false;
+      },
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
+    })
   }
 
   filterData() {

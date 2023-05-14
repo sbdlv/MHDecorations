@@ -64,7 +64,10 @@
             </p-accordion>
         </section>
         <section id="table">
-            <p-table [value]="queriedJewels" responsiveLayout="scroll">
+            <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" ngClass="flex mx-auto"
+                *ngIf="isLoadingSourceData || isLoadingTargetData"></p-progressSpinner>
+            <p-table [value]="queriedJewels" responsiveLayout="scroll"
+                *ngIf="!isLoadingSourceData && !isLoadingTargetData">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="sourceName">Original name <p-sortIcon field="sourceName"></p-sortIcon></th>
