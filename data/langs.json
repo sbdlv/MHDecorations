@@ -20,6 +20,11 @@
         "code": "ko"
     },
     {
+        "name": "Portuguese (Brasil)",
+        "flag": "br",
+        "code": "pt-BR"
+    },
+    {
         "name": "Russian",
         "flag": "ru",
         "code": "ru"
