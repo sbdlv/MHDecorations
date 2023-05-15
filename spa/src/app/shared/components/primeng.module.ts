@@ -5,6 +5,10 @@ import {SkeletonModule} from 'primeng/skeleton';
 import {InputTextModule} from 'primeng/inputtext';
 import {TableModule} from 'primeng/table';
 import {CardModule} from 'primeng/card';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { AccordionModule } from 'primeng/accordion';
+import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [],
@@ -16,7 +20,11 @@ import {CardModule} from 'primeng/card';
     SkeletonModule,
     InputTextModule,
     TableModule,
-    CardModule
+    CardModule,
+    SelectButtonModule,
+    AccordionModule,
+    ToastModule,
+    ProgressSpinnerModule
   ]
 })
 export class PrimengModule { }

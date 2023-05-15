@@ -5,7 +5,9 @@ export interface IJewel {
   id: string,
   name: string,
   ability: string
-  desc: string
+  desc: string,
+  level: number,
+  skill_level: number
 }
 
 @Injectable({
@@ -16,6 +18,6 @@ export class JewelsService {
   constructor(private api: ApiService) { }
 
   getByLang(lang: string) {
-    return this.api.getData<IJewel[]>(`jewels.${lang}.json`)
+    return this.api.getData<IJewel[]>(`jewels.${lang}.json`);
   }
 }
