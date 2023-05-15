@@ -20,10 +20,10 @@
     "@angular/router": "^15.2.9",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primeng": "^14.2.3",
+    "primeng": "^15.4.1",
     "rxjs": "~7.8.1",
     "tslib": "^2.5.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.13.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.8",
@@ -35,7 +35,7 @@
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~1.7.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~4.8.3"
   }
 }
