@@ -1,10 +1,11 @@
+<p-toast></p-toast>
 <main class="container card">
     <p-card>
         <h1 class="mt-0 mb-3">Translated decorations - MH Rise</h1>
-        <p class="mb-4">Search decorations by their name.</p>
+        <p class="mb-4">Search decorations.</p>
         <section id="lang-selection" class="mb-4 flex align-items-center">
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="sourceLang" (onChange)="onChangeSourceLang()"
-                [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
+                [filter]="true" filterBy="name" placeholder="Select a Country" [autofocusFilter]="false">
                 <ng-template pTemplate="selectedItem">
                     <div class="flag-item flag-item-value" *ngIf="sourceLang">
                         <img src="assets/flags/flag_placeholder.png" [class]="'flag flag-' + sourceLang.flag" />
@@ -20,7 +21,7 @@
             </p-dropdown>
             <i class="pi pi-arrow-right mx-4 my-2"></i>
             <p-dropdown [options]="langs" optionLabel="name" [(ngModel)]="targetLang" (onChange)="onChangeTargetLang()"
-                [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Country">
+                [filter]="true" filterBy="name" placeholder="Select a Country" [autofocusFilter]="false">
                 <ng-template pTemplate="selectedItem">
                     <div class="flag-item flag-item-value" *ngIf="targetLang">
                         <img src="assets/flags/flag_placeholder.png" [class]="'flag flag-' + targetLang.flag" />
@@ -38,24 +39,49 @@
         <section id="search" class="mb-4">
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search by original name" [(ngModel)]="query" (ngModelChange)="onSearch()"
-                    class="w-full" />
+                <input type="text" pInputText placeholder="Search by original name or target name"
+                    [(ngModel)]="searchText" (ngModelChange)="filterData()" class="w-full" />
             </span>
         </section>
+        <section class="mb-4">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Filters">
+                    <div class="flex flex-wrap gap-4">
+                        <div>
+                            <h5>Decoration level</h5>
+                            <p-selectButton [options]="decorationLevelOptions" [multiple]="true" optionLabel="name"
+                                optionValue="value" [(ngModel)]="decorationLevels"
+                                (ngModelChange)="filterData()"></p-selectButton>
+                        </div>
+                        <div>
+                            <h5>Ability level</h5>
+                            <p-selectButton [options]="abilityLevelOptions" [multiple]="true" optionLabel="name"
+                                optionValue="value" [(ngModel)]="abilityLevels"
+                                (ngModelChange)="filterData()"></p-selectButton>
+                        </div>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
+        </section>
         <section id="table">
-            <p-table [value]="queriedJewels" responsiveLayout="scroll">
+            <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" ngClass="flex mx-auto"
+                *ngIf="isLoadingData"></p-progressSpinner>
+            <p-table [value]="queriedJewels" responsiveLayout="scroll"
+                *ngIf="!isLoadingData">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Original name</th>
-                        <th>Target name</th>
-                        <th>Ability</th>
-                        <th>Description</th>
+                        <th pSortableColumn="sourceName">Original name <p-sortIcon field="sourceName"></p-sortIcon></th>
+                        <th pSortableColumn="targetName">Target name <p-sortIcon field="targetName"></p-sortIcon></th>
+                        <th pSortableColumn="ability">Ability <p-sortIcon field="ability"></p-sortIcon></th>
+                        <th pSortableColumn="desc">Description <p-sortIcon field="desc"></p-sortIcon></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-jewel>
                     <tr>
-                        <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{jewel.id}}" target="_blank">{{jewel.sourceName}}</a></td>
-                        <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{jewel.id}}" target="_blank">{{jewel.targetName}}</a></td>
+                        <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{jewel.id}}"
+                                target="_blank">{{jewel.sourceName}}</a></td>
+                        <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{jewel.id}}"
+                                target="_blank">{{jewel.targetName}}</a></td>
                         <td>{{jewel.ability}}</td>
                         <td>{{jewel.desc}}</td>
                     </tr>
