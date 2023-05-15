@@ -39,13 +39,7 @@ const LANGS = require('../data/langs.json');
         }
     }
 
-    const promises = [];
-
-    for (const lang of LANGS) {
-        promises.push(processLang(lang.code, await browser.newPage()))
-    }
-
-    await Promise.all(promises);
+    await Promise.all(LANGS.map(async lang => processLang(lang.code, await browser.newPage())));
 
     console.log(`All scrapping ended. Good hunt!`);
 
