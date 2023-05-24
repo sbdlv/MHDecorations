@@ -66,8 +66,7 @@
         <section id="table">
             <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" ngClass="flex mx-auto"
                 *ngIf="isLoadingData"></p-progressSpinner>
-            <p-table [value]="queriedJewels" responsiveLayout="scroll"
-                *ngIf="!isLoadingData">
+            <p-table [value]="filteredJewels" responsiveLayout="scroll" *ngIf="!isLoadingData">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="sourceName">Original name <p-sortIcon field="sourceName"></p-sortIcon></th>
@@ -81,7 +80,7 @@
                         <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{jewel.id}}"
                                 target="_blank">{{jewel.sourceName}}</a></td>
                         <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{jewel.id}}"
-                                target="_blank">{{jewel.targetName}}</a></td>
+                                target="_blank">{{jewel.name}}</a></td>
                         <td>{{jewel.ability}}</td>
                         <td>{{jewel.desc}}</td>
                     </tr>
