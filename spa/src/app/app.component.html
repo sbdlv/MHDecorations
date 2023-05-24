@@ -66,7 +66,7 @@
         <section id="table">
             <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" ngClass="flex mx-auto"
                 *ngIf="isLoadingData"></p-progressSpinner>
-            <p-table [value]="filteredJewels" responsiveLayout="scroll" *ngIf="!isLoadingData">
+            <p-table [value]="filteredJewels" responsiveLayout="scroll" *ngIf="!isLoadingData" sortMode="multiple">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="sourceName">Original name <p-sortIcon field="sourceName"></p-sortIcon></th>
