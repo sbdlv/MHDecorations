@@ -2,6 +2,19 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const LANGS = require('../data/langs.json');
 
+// Get lang arguments
+const inputLangCodes = process.argv.slice(2);
+
+let processLangs;
+
+if (inputLangCodes.length) {
+    processLangs = LANGS.filter(langData => inputLangCodes.includes(langData.code));
+} else {
+    processLangs = LANGS;
+}
+
+console.log(`Processing lang codes:`, processLangs.map(langData => langData.code).toString());
+
 (async () => {
     const browser = await puppeteer.launch();
 
@@ -39,7 +52,7 @@ const LANGS = require('../data/langs.json');
         }
     }
 
-    await Promise.all(LANGS.map(async lang => processLang(lang.code, await browser.newPage())));
+    await Promise.all(processLangs.map(async lang => processLang(lang.code, await browser.newPage())));
 
     console.log(`All scrapping ended. Good hunt!`);
 
