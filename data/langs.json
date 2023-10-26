@@ -15,14 +15,19 @@
         "code": "ja"
     },
     {
-        "name": "Korean",
-        "flag": "kr",
-        "code": "ko"
+        "name": "Latin American Spanish",
+        "flag": "mx",
+        "code": "es-419"
     },
     {
         "name": "Portuguese (Brasil)",
         "flag": "br",
         "code": "pt-BR"
+    },
+    {
+        "name": "Korean",
+        "flag": "kr",
+        "code": "ko"
     },
     {
         "name": "Russian",
