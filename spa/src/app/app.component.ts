@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './shared/services/api.service';
-import { IJewel, JewelsService } from './shared/services/jewels.service';
 import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
+import { notFoundTexts } from 'src/assets/not_found_texts';
+import { ApiService } from './shared/services/api.service';
+import { IJewel, JewelsService } from './shared/services/jewels.service';
 
 interface QueriedData {
   id: string,
@@ -179,5 +180,9 @@ export class AppComponent implements OnInit {
         code: 'es'
       };
     }
+  }
+
+  getNotFoundText() {
+    return notFoundTexts[this.targetLang.code] || 'Nothing found';
   }
 }
