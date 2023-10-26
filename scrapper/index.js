@@ -29,7 +29,7 @@ console.log(`Processing lang codes:`, processLangs.map(langData => langData.code
             return rows.map(row => {
                 const fields = row.getElementsByTagName("td");
                 return {
-                    id: parseInt(fields[0].firstElementChild.href.match(/[0-9]+/)[0]),
+                    id: parseInt(fields[0].firstElementChild.href.split('/').pop()),
                     name: fields[0].innerText,
                     ability: fields[1].innerText,
                     desc: fields[2].innerText,
