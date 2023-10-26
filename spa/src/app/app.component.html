@@ -85,6 +85,12 @@
                         <td>{{jewel.desc}}</td>
                     </tr>
                 </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <div class="flex align-items-center gap-2 my-4">
+                        <img src="assets/palico.png" alt="Palico" srcset="" class="h-5rem">
+                        <p class="font-italic">{{getNotFoundText()}}</p>
+                    </div>
+                </ng-template>
             </p-table>
         </section>
     </p-card>
