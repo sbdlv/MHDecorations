@@ -12,6 +12,8 @@ body{
     background-image: url("./assets/background.jpg");
     background-attachment: fixed;
     backdrop-filter: blur(4px);
+    overflow-y: scroll;
+    min-height: 100vh;
 }
 
 a{

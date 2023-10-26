@@ -2,8 +2,21 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const LANGS = require('../data/langs.json');
 
+// Get lang arguments
+const inputLangCodes = process.argv.slice(2);
+
+let processLangs;
+
+if (inputLangCodes.length) {
+    processLangs = LANGS.filter(langData => inputLangCodes.includes(langData.code));
+} else {
+    processLangs = LANGS;
+}
+
+console.log(`Processing lang codes:`, processLangs.map(langData => langData.code).toString());
+
 (async () => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: "new" });
 
     async function scrapData(lang, page) {
         const res = await page.goto(`https://mhrise.kiranico.com/${lang === 'en' ? '' : lang + '/'}data/decorations`);
@@ -16,11 +29,15 @@ const LANGS = require('../data/langs.json');
             return rows.map(row => {
                 const fields = row.getElementsByTagName("td");
                 return {
-                    id: parseInt(fields[0].firstElementChild.href.match(/[0-9]+/)[0]),
+                    id: parseInt(fields[0].firstElementChild.href.split('/').pop()),
                     name: fields[0].innerText,
                     ability: fields[1].innerText,
                     desc: fields[2].innerText,
-                    level: parseInt(fields[0].innerText.match(/[０-９]+|[0-9]+/).pop()),
+                    level: parseInt(
+                        fields[0].innerText
+                            .match(/[０-９]+|[0-9]+/).pop()
+                            .replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
+                    ),
                     skill_level: parseInt(fields[1].innerText.match(/[０-９]+|[0-9]+/).pop()),
                 };
             })
@@ -39,13 +56,7 @@ const LANGS = require('../data/langs.json');
         }
     }
 
-    const promises = [];
-
-    for (const lang of LANGS) {
-        promises.push(processLang(lang.code, await browser.newPage()))
-    }
-
-    await Promise.all(promises);
+    await Promise.all(processLangs.map(async lang => processLang(lang.code, await browser.newPage())));
 
     console.log(`All scrapping ended. Good hunt!`);
 

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './shared/services/api.service';
-import { IJewel, JewelsService } from './shared/services/jewels.service';
 import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
+import { notFoundTexts } from 'src/assets/not_found_texts';
+import { ApiService } from './shared/services/api.service';
+import { IJewel, JewelsService } from './shared/services/jewels.service';
 
 interface QueriedData {
   id: string,
@@ -18,6 +19,10 @@ interface ILang {
   code: string
 }
 
+interface IJoinedJewel extends IJewel {
+  sourceName: string
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -29,6 +34,9 @@ export class AppComponent implements OnInit {
 
   sourceLang!: ILang;
   targetLang!: ILang;
+
+  jewels!: IJoinedJewel[];
+  filteredJewels!: IJoinedJewel[];
 
   sourceJewels: IJewel[] = [];
   targetJewels: IJewel[] = [];
@@ -77,8 +85,15 @@ export class AppComponent implements OnInit {
       targetJewels: this.jewelsService.getByLang(this.targetLang.code),
     }).subscribe({
       next: (data) => {
-        this.sourceJewels = data.sourceJewels;
-        this.targetJewels = data.targetJewels;
+        this.jewels = data.targetJewels.map(targetJewel => {
+          const originalData = data.sourceJewels.find(sourceJewel => sourceJewel.id == targetJewel.id);
+
+          return {
+            ...targetJewel,
+            // Just in case some data is missing, set a error string
+            sourceName: originalData?.name || 'NOT FOUND'
+          }
+        })
 
         // Filter all the data at once
         this.filterData();
@@ -93,8 +108,16 @@ export class AppComponent implements OnInit {
 
     this.isLoadingData = true;
     this.jewelsService.getByLang(this.sourceLang.code).subscribe({
-      next: (jewels) => {
-        this.sourceJewels = jewels;
+      next: (sourceJewels) => {
+        // Rewrite jewels data
+        this.jewels = this.jewels.map(jewel => {
+          const sourceJewel = sourceJewels.find(sourceJewel => sourceJewel.id == jewel.id);
+
+          return {
+            ...jewel,
+            sourceName: sourceJewel?.name || 'NOT FOUND'
+          }
+        })
         this.filterData();
         this.isLoadingData = false;
       },
@@ -107,8 +130,16 @@ export class AppComponent implements OnInit {
 
     this.isLoadingData = true;
     this.jewelsService.getByLang(this.targetLang.code).subscribe({
-      next: (jewels) => {
-        this.targetJewels = jewels;
+      next: (targetJewels) => {
+        // Rewrite jewels data
+        this.jewels = this.jewels.map(jewel => {
+          const targetJewel = targetJewels.find(targetJewel => targetJewel.id == jewel.id);
+
+          return {
+            ...jewel,
+            ...targetJewel
+          }
+        })
         this.filterData();
         this.isLoadingData = false;
       },
@@ -117,37 +148,10 @@ export class AppComponent implements OnInit {
   }
 
   filterData() {
-    // Search jewels from both languages
-    const matchedJewelsSourceLang = this.filterJewels(this.sourceJewels);
-    const matchedJewelsTargetLang = this.filterJewels(this.targetJewels);
-
-    // Create a collection with the matched jewels IDs form both languages
-    const joinedMatchedIDs = new Set<string>(
-      [
-        ...matchedJewelsSourceLang.map(jewel => jewel.id),
-        ...matchedJewelsTargetLang.map(jewel => jewel.id)
-      ]
-    );
-
-    // Get the data for the matched IDs
-    this.queriedJewels = Array.from(joinedMatchedIDs).map(matchedJewelID => {
-      const targetLangJewel = this.targetJewels.find(jewel => jewel.id === matchedJewelID);
-
-      return {
-        id: matchedJewelID,
-        sourceName: this.sourceJewels.find(jewel => jewel.id === matchedJewelID)?.name,
-        targetName: targetLangJewel?.name,
-        desc: targetLangJewel?.desc,
-        ability: targetLangJewel?.ability
-      }
-    })
-  }
-
-  private filterJewels(jewels: IJewel[]) {
     const lowerCaseQuery = this.searchText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    return jewels
-      .filter(jewel => jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1)
+    this.filteredJewels = this.jewels
+      .filter(jewel => jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1 || jewel.sourceName.toLocaleLowerCase().search(lowerCaseQuery) > -1)
       .filter(jewel => !this.decorationLevels.length || this.decorationLevels.includes(jewel.level))
       .filter(jewel => !this.abilityLevels.length || this.abilityLevels.includes(jewel.skill_level))
   }
@@ -176,5 +180,9 @@ export class AppComponent implements OnInit {
         code: 'es'
       };
     }
+  }
+
+  getNotFoundText() {
+    return notFoundTexts[this.targetLang.code] || 'Nothing found';
   }
 }
