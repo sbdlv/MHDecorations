@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { notFoundTexts } from 'src/assets/not_found_texts';
 import { ApiService } from './shared/services/api.service';
-import { IJewel, JewelsService } from './shared/services/jewels.service';
+import { DecorationsService, IDecoration } from './shared/services/decorations.service';
 
 interface QueriedData {
   id: string,
@@ -19,7 +19,7 @@ interface ILang {
   code: string
 }
 
-interface IJoinedJewel extends IJewel {
+interface IJoinedDecoration extends IDecoration {
   sourceName: string
 }
 
@@ -35,14 +35,18 @@ export class AppComponent implements OnInit {
   sourceLang!: ILang;
   targetLang!: ILang;
 
-  jewels!: IJoinedJewel[];
-  filteredJewels!: IJoinedJewel[];
+  decorations!: IJoinedDecoration[];
+  filteredDecorations!: IJoinedDecoration[];
 
-  sourceJewels: IJewel[] = [];
-  targetJewels: IJewel[] = [];
-  queriedJewels: QueriedData[] = [];
+  sourceDecorations: IDecoration[] = [];
+  targetDecorations: IDecoration[] = [];
+  queriedDecorations: QueriedData[] = [];
+
+  bookmarkedDecorations: Set<IJoinedDecoration> = new Set();
 
   isLoadingData = true;
+
+  onlyBookmarked = false;
 
   // Filters
 
@@ -67,7 +71,7 @@ export class AppComponent implements OnInit {
 
 
   constructor(
-    private jewelsService: JewelsService,
+    private decorationsService: DecorationsService,
     private api: ApiService,
     private messageService: MessageService
   ) { }
@@ -81,15 +85,15 @@ export class AppComponent implements OnInit {
     })
 
     forkJoin({
-      sourceJewels: this.jewelsService.getByLang(this.sourceLang.code),
-      targetJewels: this.jewelsService.getByLang(this.targetLang.code),
+      sourceDecorations: this.decorationsService.getByLang(this.sourceLang.code),
+      targetDecorations: this.decorationsService.getByLang(this.targetLang.code),
     }).subscribe({
       next: (data) => {
-        this.jewels = data.targetJewels.map(targetJewel => {
-          const originalData = data.sourceJewels.find(sourceJewel => sourceJewel.id == targetJewel.id);
+        this.decorations = data.targetDecorations.map(targetDecoration => {
+          const originalData = data.sourceDecorations.find(sourceDecoration => sourceDecoration.id == targetDecoration.id);
 
           return {
-            ...targetJewel,
+            ...targetDecoration,
             // Just in case some data is missing, set a error string
             sourceName: originalData?.name || 'NOT FOUND'
           }
@@ -99,7 +103,7 @@ export class AppComponent implements OnInit {
         this.filterData();
         this.isLoadingData = false;
       },
-      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain decorations data. Please refresh the page' })
     })
   }
 
@@ -107,21 +111,21 @@ export class AppComponent implements OnInit {
     localStorage.setItem('sourceLang', JSON.stringify(this.sourceLang));
 
     this.isLoadingData = true;
-    this.jewelsService.getByLang(this.sourceLang.code).subscribe({
-      next: (sourceJewels) => {
-        // Rewrite jewels data
-        this.jewels = this.jewels.map(jewel => {
-          const sourceJewel = sourceJewels.find(sourceJewel => sourceJewel.id == jewel.id);
+    this.decorationsService.getByLang(this.sourceLang.code).subscribe({
+      next: (sourceDecorations) => {
+        // Rewrite decorations data
+        this.decorations = this.decorations.map(decoration => {
+          const sourceDecoration = sourceDecorations.find(sourceDecoration => sourceDecoration.id == decoration.id);
 
           return {
-            ...jewel,
-            sourceName: sourceJewel?.name || 'NOT FOUND'
+            ...decoration,
+            sourceName: sourceDecoration?.name || 'NOT FOUND'
           }
         })
         this.filterData();
         this.isLoadingData = false;
       },
-      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain decorations data. Please refresh the page' })
     });
   }
 
@@ -129,31 +133,32 @@ export class AppComponent implements OnInit {
     localStorage.setItem('targetLang', JSON.stringify(this.targetLang));
 
     this.isLoadingData = true;
-    this.jewelsService.getByLang(this.targetLang.code).subscribe({
-      next: (targetJewels) => {
-        // Rewrite jewels data
-        this.jewels = this.jewels.map(jewel => {
-          const targetJewel = targetJewels.find(targetJewel => targetJewel.id == jewel.id);
+    this.decorationsService.getByLang(this.targetLang.code).subscribe({
+      next: (targetDecorations) => {
+        // Rewrite decorations data
+        this.decorations = this.decorations.map(decoration => {
+          const targetDecoration = targetDecorations.find(targetDecoration => targetDecoration.id == decoration.id);
 
           return {
-            ...jewel,
-            ...targetJewel
+            ...decoration,
+            ...targetDecoration
           }
         })
         this.filterData();
         this.isLoadingData = false;
       },
-      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain jewels data. Please refresh the page' })
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t obtain decorations data. Please refresh the page' })
     });
   }
 
   filterData() {
     const lowerCaseQuery = this.searchText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    this.filteredJewels = this.jewels
-      .filter(jewel => jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1 || jewel.sourceName.toLocaleLowerCase().search(lowerCaseQuery) > -1)
-      .filter(jewel => !this.decorationLevels.length || this.decorationLevels.includes(jewel.level))
-      .filter(jewel => !this.abilityLevels.length || this.abilityLevels.includes(jewel.skill_level))
+    this.filteredDecorations = this.decorations
+      .filter(decoration => !this.onlyBookmarked || this.bookmarkedDecorations.has(decoration))
+      .filter(decoration => decoration.name.toLocaleLowerCase().search(lowerCaseQuery) > -1 || decoration.sourceName.toLocaleLowerCase().search(lowerCaseQuery) > -1)
+      .filter(decoration => !this.decorationLevels.length || this.decorationLevels.includes(decoration.level))
+      .filter(decoration => !this.abilityLevels.length || this.abilityLevels.includes(decoration.skill_level))
   }
 
   private setSourceAndTargetLanguageSelections() {
@@ -179,6 +184,18 @@ export class AppComponent implements OnInit {
         flag: 'es',
         code: 'es'
       };
+    }
+  }
+
+  bookmarkClick(decoration: IJoinedDecoration) {
+    if (this.bookmarkedDecorations.has(decoration)) {
+      this.bookmarkedDecorations.delete(decoration);
+      // Delete the decoration from the filtered array if onlyBookmarked mode is activated.
+      if (this.onlyBookmarked) {
+        this.filteredDecorations.splice(this.filteredDecorations.findIndex(filteredDecoration => filteredDecoration.id == decoration.id), 1);
+      }
+    } else {
+      this.bookmarkedDecorations.add(decoration);
     }
   }
 

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  getDataUrl: (resource: string) => `https://raw.githubusercontent.com/sbdlv/MHJewels/develop/data/${resource}`
+  getDataUrl: (resource: string) => `https://raw.githubusercontent.com/sbdlv/MHDecorations/develop/data/${resource}`
 };
 
 /*
