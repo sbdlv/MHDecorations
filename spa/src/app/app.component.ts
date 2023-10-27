@@ -42,7 +42,11 @@ export class AppComponent implements OnInit {
   targetJewels: IJewel[] = [];
   queriedJewels: QueriedData[] = [];
 
+  bookmarkedJewels: Set<IJoinedJewel> = new Set();
+
   isLoadingData = true;
+
+  onlyBookmarked = false;
 
   // Filters
 
@@ -151,6 +155,7 @@ export class AppComponent implements OnInit {
     const lowerCaseQuery = this.searchText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
     this.filteredJewels = this.jewels
+      .filter(jewel => !this.onlyBookmarked || this.bookmarkedJewels.has(jewel))
       .filter(jewel => jewel.name.toLocaleLowerCase().search(lowerCaseQuery) > -1 || jewel.sourceName.toLocaleLowerCase().search(lowerCaseQuery) > -1)
       .filter(jewel => !this.decorationLevels.length || this.decorationLevels.includes(jewel.level))
       .filter(jewel => !this.abilityLevels.length || this.abilityLevels.includes(jewel.skill_level))
@@ -179,6 +184,18 @@ export class AppComponent implements OnInit {
         flag: 'es',
         code: 'es'
       };
+    }
+  }
+
+  bookmarkClick(jewel: IJoinedJewel) {
+    if (this.bookmarkedJewels.has(jewel)) {
+      this.bookmarkedJewels.delete(jewel);
+      // Delete the jewel from the filtered array if onlyBookmarked mode is activated.
+      if (this.onlyBookmarked) {
+        this.filteredJewels.splice(this.filteredJewels.findIndex(filteredJewel => filteredJewel.id == jewel.id), 1);
+      }
+    } else {
+      this.bookmarkedJewels.add(jewel);
     }
   }
 

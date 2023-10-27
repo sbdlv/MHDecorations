@@ -62,6 +62,11 @@
                     </div>
                 </p-accordionTab>
             </p-accordion>
+            <div class="flex align-items-center mt-4">
+                <label for="onlyBookmarked" class="mr-4">Show only bookmarks</label>
+                <p-inputSwitch [(ngModel)]="onlyBookmarked" inputId="onlyBookmarked"
+                    styleClass="flex align-items-center" (ngModelChange)="filterData()"></p-inputSwitch>
+            </div>
         </section>
         <section id="table">
             <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" ngClass="flex mx-auto"
@@ -73,6 +78,7 @@
                         <th pSortableColumn="targetName">Target name <p-sortIcon field="targetName"></p-sortIcon></th>
                         <th pSortableColumn="ability">Ability <p-sortIcon field="ability"></p-sortIcon></th>
                         <th pSortableColumn="desc">Description <p-sortIcon field="desc"></p-sortIcon></th>
+                        <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-jewel>
@@ -83,6 +89,11 @@
                                 target="_blank">{{jewel.name}}</a></td>
                         <td>{{jewel.ability}}</td>
                         <td>{{jewel.desc}}</td>
+                        <td>
+                            <p-button icon="pi {{bookmarkedJewels.has(jewel) ? 'pi-bookmark-fill' : 'pi-bookmark'}}"
+                                styleClass="p-button-rounded p-button-warning p-button-text"
+                                (onClick)="bookmarkClick(jewel)"></p-button>
+                        </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
