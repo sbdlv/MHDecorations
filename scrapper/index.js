@@ -47,8 +47,8 @@ console.log(`Processing lang codes:`, processLangs.map(langData => langData.code
     async function processLang(lang, page) {
         try {
             console.log(`Scrapping for lang: ${lang}...`);
-            const jewels = await scrapData(lang, page);
-            fs.writeFileSync(`../data/jewels.${lang}.json`, JSON.stringify(jewels), { flag: 'w+' })
+            const decorations = await scrapData(lang, page);
+            fs.writeFileSync(`../data/decorations.${lang}.json`, JSON.stringify(decorations), { flag: 'w+' })
             console.log(`Scrapping ended for lang: ${lang}!`);
             page.close();
         } catch (error) {

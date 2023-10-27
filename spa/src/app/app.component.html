@@ -71,7 +71,7 @@
         <section id="table">
             <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" ngClass="flex mx-auto"
                 *ngIf="isLoadingData"></p-progressSpinner>
-            <p-table [value]="filteredJewels" responsiveLayout="scroll" *ngIf="!isLoadingData" sortMode="multiple">
+            <p-table [value]="filteredDecorations" responsiveLayout="scroll" *ngIf="!isLoadingData" sortMode="multiple">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="sourceName">Original name <p-sortIcon field="sourceName"></p-sortIcon></th>
@@ -81,18 +81,18 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-jewel>
+                <ng-template pTemplate="body" let-decoration>
                     <tr>
-                        <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{jewel.id}}"
-                                target="_blank">{{jewel.sourceName}}</a></td>
-                        <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{jewel.id}}"
-                                target="_blank">{{jewel.name}}</a></td>
-                        <td>{{jewel.ability}}</td>
-                        <td>{{jewel.desc}}</td>
+                        <td><a href="https://mhrise.kiranico.com/{{sourceLang.code}}/data/decorations/{{decoration.id}}"
+                                target="_blank">{{decoration.sourceName}}</a></td>
+                        <td><a href="https://mhrise.kiranico.com/{{targetLang.code}}/data/decorations/{{decoration.id}}"
+                                target="_blank">{{decoration.name}}</a></td>
+                        <td>{{decoration.ability}}</td>
+                        <td>{{decoration.desc}}</td>
                         <td>
-                            <p-button icon="pi {{bookmarkedJewels.has(jewel) ? 'pi-bookmark-fill' : 'pi-bookmark'}}"
+                            <p-button icon="pi {{bookmarkedDecorations.has(decoration) ? 'pi-bookmark-fill' : 'pi-bookmark'}}"
                                 styleClass="p-button-rounded p-button-warning p-button-text"
-                                (onClick)="bookmarkClick(jewel)"></p-button>
+                                (onClick)="bookmarkClick(decoration)"></p-button>
                         </td>
                     </tr>
                 </ng-template>
