@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 
-export interface IJewel {
+export interface IDecoration {
   id: string,
   name: string,
   ability: string
@@ -13,11 +13,11 @@ export interface IJewel {
 @Injectable({
   providedIn: 'root'
 })
-export class JewelsService {
+export class DecorationsService {
 
   constructor(private api: ApiService) { }
 
   getByLang(lang: string) {
-    return this.api.getData<IJewel[]>(`jewels.${lang}.json`);
+    return this.api.getData<IDecoration[]>(`decorations.${lang}.json`);
   }
 }
