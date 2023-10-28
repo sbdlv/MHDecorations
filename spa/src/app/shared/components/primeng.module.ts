@@ -1,15 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'primeng/dropdown';
-import {SkeletonModule} from 'primeng/skeleton';
-import {InputTextModule} from 'primeng/inputtext';
-import {TableModule} from 'primeng/table';
-import {CardModule} from 'primeng/card';
-import { SelectButtonModule } from 'primeng/selectbutton';
+import { NgModule } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
-import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
   declarations: [],
   imports: [
@@ -24,7 +25,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     SelectButtonModule,
     AccordionModule,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ButtonModule,
+    InputSwitchModule
   ]
 })
 export class PrimengModule { }

@@ -1,0 +1,10 @@
+{
+  "/api/kanji": {
+    "target": "https://kanjiapi.dev/v1",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}
