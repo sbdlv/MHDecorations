@@ -1,10 +1,10 @@
 {
-  "name": "mhjewles-front",
+  "name": "translated-monster-hunter-rise-decorations-front",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-path ../docs --base-href /MHDecorations/",
+    "build": "ng build --output-path ../docs --base-href /translated-monster-hunter-rise-decorations/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
