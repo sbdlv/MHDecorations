@@ -2,7 +2,7 @@ Search Monster Hunter Rise decorations between languages.
 
 The project contains two main applications:
 # Front-end
-Made with Angular. You can see the build version under the [github page](https://sbdlv.github.io/MHDecorations/).
+Made with Angular. You can see the build version under the [github page](https://sbdlv.github.io/translated-monster-hunter-rise-decorations/).
 
 ![Front-end preview](/docs/img/front-end_preview.gif)
 
