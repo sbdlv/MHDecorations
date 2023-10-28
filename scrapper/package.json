@@ -1,5 +1,5 @@
 {
-  "name": "mhjewles-scrapper",
+  "name": "mhdecorations-scrapper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "puppeteer": "^20.2.0"
   }
 }

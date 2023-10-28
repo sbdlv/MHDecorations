@@ -1,6 +1,17 @@
+require('dotenv').config()
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const LANGS = require('../data/langs.json');
+const path = require('path');
+
+// OUTPUT PATH
+const DECORATIONS_DATA_OUTPUT_PATH = process.env.DECORATIONS_DATA_OUTPUT_PATH || '../spa/src/assets/decorations/';
+
+if (process.env.LANG_CODES == undefined) {
+    console.error('No LANG_CODES specified at the env file');
+    return -1;
+}
+
+const LANG_CODES = process.env.LANG_CODES.split(',');
 
 // Get lang arguments
 const inputLangCodes = process.argv.slice(2);
@@ -8,12 +19,12 @@ const inputLangCodes = process.argv.slice(2);
 let processLangs;
 
 if (inputLangCodes.length) {
-    processLangs = LANGS.filter(langData => inputLangCodes.includes(langData.code));
+    processLangs = LANG_CODES.filter(langCode => inputLangCodes.includes(langCode));
 } else {
-    processLangs = LANGS;
+    processLangs = LANG_CODES;
 }
 
-console.log(`Processing lang codes:`, processLangs.map(langData => langData.code).toString());
+console.log(`Processing lang codes:`, processLangs.toString());
 
 (async () => {
     const browser = await puppeteer.launch({ headless: "new" });
@@ -48,7 +59,7 @@ console.log(`Processing lang codes:`, processLangs.map(langData => langData.code
         try {
             console.log(`Scrapping for lang: ${lang}...`);
             const decorations = await scrapData(lang, page);
-            fs.writeFileSync(`../data/decorations.${lang}.json`, JSON.stringify(decorations), { flag: 'w+' })
+            fs.writeFileSync(path.join(DECORATIONS_DATA_OUTPUT_PATH, `decorations.${lang}.json`), JSON.stringify(decorations), { flag: 'w+' })
             console.log(`Scrapping ended for lang: ${lang}!`);
             page.close();
         } catch (error) {
@@ -56,7 +67,7 @@ console.log(`Processing lang codes:`, processLangs.map(langData => langData.code
         }
     }
 
-    await Promise.all(processLangs.map(async lang => processLang(lang.code, await browser.newPage())));
+    await Promise.all(processLangs.map(async langCode => processLang(langCode, await browser.newPage())));
 
     console.log(`All scrapping ended. Good hunt!`);
 
